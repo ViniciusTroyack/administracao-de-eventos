@@ -1,17 +1,16 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GetTogetherContext } from '../../providers/Get-together'
 import Card from '../../components/Card'
+import { MainContainer } from '../Menu/styles'
 
 export default function GetTogether() {
-
+    const [local] = useState('gettogether');
     const { getTogetherDrinks } = useContext(GetTogetherContext)
 
     return (
-        <div>
-            <ul>
-                {getTogetherDrinks.map((drink) => <Card key={drink.id} drink={drink} />)}
-            </ul>
-        </div>
+        <MainContainer>
+            {getTogetherDrinks.map((drink, index) => <Card key={index} drink={drink} local={local} />)}
+        </MainContainer>
     )
 }

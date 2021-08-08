@@ -10,17 +10,27 @@ export default function MenuProvider({ children }) {
     const getDrinks = () => {
         axios
             .get('https://api.punkapi.com/v2/beers')
-            .then((res) => setMenu(res.data),
-                console.log('ok'))
+            .then((res) => setMenu(res.data))
             .catch((e) => console.log(e));
     }
     useEffect(() => {
         getDrinks();
     }, []);
 
+    const addMenu = (item) => {
+        setMenu([...menu, item])
+        localStorage.setItem("menu", JSON.stringify(menu))
+    }
+
+    const removeMenu = (item) => {
+        const newList = menu.filter((drinks) => drinks.id !== item.id);
+        setMenu(newList)
+        localStorage.setItem("menu", JSON.stringify(menu))
+    }
+
     return (
         <div>
-            <MenuContext.Provider value={{ menu }}>
+            <MenuContext.Provider value={{ menu, addMenu, removeMenu }}>
                 {children}
             </MenuContext.Provider>
         </div>

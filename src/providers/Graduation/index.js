@@ -5,15 +5,19 @@ export const GraduationContext = createContext();
 
 export default function GraduationProvider({ children }) {
 
-    const [graduationDrinks, setgraduationsDrinks] = useState([]);
+    const [graduationDrinks, setgraduationsDrinks] = useState(
+        JSON.parse(localStorage.getItem('gettogether')) || []
+    );
 
     const addGraduation = (item) => {
         setgraduationsDrinks([...graduationDrinks, item])
+        localStorage.setItem("graduation", JSON.stringify(graduationDrinks))
     }
 
     const removeGraduation = (item) => {
         const newList = graduationDrinks.filter((drinks) => drinks.id !== item.id);
         setgraduationsDrinks(newList)
+        localStorage.setItem("graduation", JSON.stringify(graduationDrinks))
     }
 
     return (

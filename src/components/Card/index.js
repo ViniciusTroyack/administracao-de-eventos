@@ -1,31 +1,36 @@
 import React, { useState } from 'react'
 import Button from '../Button';
-import './styles.css'
+import { Container, Image } from './styles';
 
-export default function Card({ drink }) {
+
+export default function Card({ drink, local }) {
     const [event, setEvent] = useState([]);
-    const [isRemovable, setIsRemovable] = useState(false)
     const events = [
+        { id: 0, name: 'Selecione um evento' },
         { id: 1, name: 'Casamento' },
         { id: 2, name: 'Confraternização' },
         { id: 3, name: 'Formatura' }
     ]
 
     return (
-        <ul>
-            <li>{drink.name}</li>
-            <li>Imagem</li>
-            <li>{drink.first_brewed}</li>
-            <li>{drink.description}</li>
-            <li>{drink.volume.value}</li>
-            {!isRemovable &&
-                <select onChange={e => setEvent(e.target.value)}>
-                    {events.map((item) => (
-                        <option key={item.id} value={item.name}>{item.name}</option>
+        <Container>
+            <Image class="images">
+                <img src={drink.image_url} />
+            </Image>
+            <div className='mainCard'>
+                <h1>{drink.name}</h1>
+                <span>Desde: {drink.first_brewed}</span>
+                <p>{drink.description}</p>
+                <span>Quantidade: {drink.volume.value} {drink.volume.unit}</span>
+
+                {local === 'menu' ? <select onChange={e => setEvent(e.target.value)}>
+                    {events.map((item, index) => (
+                        <option key={index} value={item.name}>{item.name}</option>
                     ))}
-                </select>
-            }
-            <Button isRemovable={isRemovable} type={event} drink={drink} />
-        </ul>
+                </select> : ''}
+
+                <Button local={local} type={event} drink={drink} />
+            </div>
+        </Container>
     )
 }
